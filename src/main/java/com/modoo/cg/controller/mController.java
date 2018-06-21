@@ -56,6 +56,18 @@ public class mController {
 		return "login";
 	}*/
 	
+	
+	//메인페이지
+	@RequestMapping("/")
+	public String home(Model model) {
+		
+		
+		
+		return "index";
+	}
+	
+	
+	
 	//mapping
 	@RequestMapping("/list")
 	public String list(Model model) {
@@ -150,6 +162,7 @@ public class mController {
 		this.naverLoginBO = naverLoginBO;
 	}
 	
+	
     @RequestMapping("/login")
     public ModelAndView login(HttpSession session) {
         /* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
@@ -158,14 +171,19 @@ public class mController {
         /* 생성한 인증 URL을 View로 전달 */
         return new ModelAndView("login", "url", naverAuthUrl);
     }
+    
+    
     @RequestMapping("/callback")
 	public ModelAndView callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException {
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
+		
+		
 	
 		return new ModelAndView("callback", "result", apiResult);
 	}
 	
+    
    @RequestMapping("/logout")
    	public ModelAndView logout(HttpSession session) throws IOException {
 	   String oauthToken = naverLoginBO.logout(session);
