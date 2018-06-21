@@ -1,0 +1,22 @@
+create database mg;
+
+use mg;
+
+create table free_board(
+	id integer(4) primary key auto_increment,
+	name varchar(10),
+	title varchar(50),
+	content varchar(100),
+	date date,
+	hit Integer(4),
+	cgroup Integer(4),
+	step Integer(4),
+	indent Integer(4)
+);
+
+insert into free_board (
+	id, name, title, content, hit, cgroup, step, indent
+) values (1111, "test", "title", "content", 0, 0 , 0, 0
+);
+
+ㅋㅋㅋㅋㅋ
