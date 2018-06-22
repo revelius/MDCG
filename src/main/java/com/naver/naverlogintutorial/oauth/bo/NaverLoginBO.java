@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.UUID;
 
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.util.StringUtils;
+
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -124,9 +127,11 @@ public class NaverLoginBO {
 	public String logout(HttpSession session) {
 			
 		String token= getTokenSession(session);
+		System.out.println("토큰"+token);
 		try {
-			String apiURL = TOKEN_DEL +"&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&access_token="+token+"&service_provider=NAVER";
-		
+			String encodeResult = URLEncoder.encode(token,"utf-8");
+			String apiURL = TOKEN_DEL +"&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&access_token="+encodeResult+"&service_provider=NAVER";
+	
 			URL url = new URL(apiURL);
 			HttpURLConnection con = (HttpURLConnection)url.openConnection();
 			con.setRequestProperty("Content-type", "text/xml; charset=UTF-8");
@@ -154,7 +159,98 @@ public class NaverLoginBO {
 			System.out.println(e);
 			
 		}
+			
 
+			
+		
 		return null;
+	}
+	public void refresh(HttpSession session) {
+		
+		String token= getTokenSession(session);
+		
+		
+
+		
+		try {
+			String encodeResult = URLEncoder.encode(token,"utf-8");
+			String refresh ="https://nid.naver.com/oauth2.0/token?grant_type=refresh_token&client_id="+CLIENT_ID +"&client_secret="+CLIENT_SECRET+"&refresh_token="+encodeResult;
+			System.out.println(refresh);
+		
+			URL url = new URL(refresh);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("GET");
+
+			con.connect();
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			
+			if(responseCode==200) { // 정상 호출
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else {  // 에러 발생
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+				String inputLine;
+				StringBuffer response = new StringBuffer();
+			while ((inputLine = br.readLine()) != null) {
+				
+				response.append(inputLine);
+				
+			}
+				br.close();
+				System.out.println(response.toString() + "갱신");
+		} catch (Exception e) {
+			
+			System.out.println(e);
+			
+		}
+		
+		
+	}
+	
+	public void naverprofile(HttpSession session) {
+		
+		String token = getTokenSession(session);
+		
+		String header = "Bearer "+token;
+		
+		try {
+			String apiURL = "https://openapi.naver.com/v1/nid/me";
+			
+			URL url = new URL(apiURL);
+			
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Authorization", header);
+			int responseCode = con.getResponseCode();
+			
+			BufferedReader br;
+			if(responseCode==200) { // 정상 호출
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else {  // 에러 발생
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+			while ((inputLine = br.readLine()) != null) {
+				response.append(inputLine);
+			}
+			
+			br.close();
+			String ab =response.toString();
+			System.out.println(ab);
+			JSONParser  jsonParser= new JSONParser();
+
+			JSONObject jsonObject = (JSONObject) jsonParser.parse(ab);
+			JSONObject dataObject = (JSONObject) jsonObject.get("response");
+			String name=(String) dataObject.get("nickname");
+			String email=(String) dataObject.get("email");
+			System.out.println(name +"   "+ email);
+			
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 }

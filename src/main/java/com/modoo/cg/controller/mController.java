@@ -188,15 +188,20 @@ public class mController {
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
 		
-		
+		naverLoginBO.naverprofile(session);
 	
+		 naverLoginBO.refresh(session);
 		return new ModelAndView("callback", "result", apiResult);
 	}
 	
     
    @RequestMapping("/logout")
    	public ModelAndView logout(HttpSession session) throws IOException {
+	  
 	   String oauthToken = naverLoginBO.logout(session);
+	   
+	   
+	   
    		return new ModelAndView("logout", "result", "네아로 연동 해제");
    	}
 }
