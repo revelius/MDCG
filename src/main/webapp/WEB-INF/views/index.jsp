@@ -10,5 +10,6 @@
 	<a href="./login">로그인</a>
 	<a href="./logout">로그아웃</a>
 	<a href="./list">게시글</a>
+	<a href="./register">회원가입</a>
 </body>
 </html>

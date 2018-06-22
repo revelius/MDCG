@@ -68,7 +68,17 @@ public class mController {
 	
 	
 	
-	//mapping
+	//회원가입
+	@RequestMapping("/register")
+	public String register(Model model) {
+		System.out.println("register()");
+		
+		command=new ListCommand();
+		command.execute(model);
+		
+		return "register";
+	}
+	
 	@RequestMapping("/list")
 	public String list(Model model) {
 		System.out.println("list()");

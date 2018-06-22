@@ -43,6 +43,21 @@ public class Dao {
 		});
 	}
 	
+	//회원가입 부분
+	public void register(final String name, final String title, final String content) {
+		template.update(new PreparedStatementCreator() {
+			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
+				String query = "insert into free_board (name, title, content, hit, cgroup, step, indent) values (?, ?, ?, 0, 0, 0, 0)";
+				PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setString(1, name);
+				pstmt.setString(2, title);
+				pstmt.setString(3, content);
+				
+				return pstmt;
+			}
+		});
+	}
+	
 	public ArrayList<Dto> list(){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by cgroup desc, step asc";
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
