@@ -80,8 +80,16 @@ public class mController {
 	}
 	
 	@RequestMapping("/list")
-	public String list(Model model) {
+	public String list(@RequestParam(defaultValue="title") String searchOption ,
+			@RequestParam(defaultValue="") String keyword, 
+			@RequestParam(defaultValue="1") int curPage ,
+			Model model) {
+		
 		System.out.println("list()");
+		
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchOption", searchOption);
 		
 		command=new ListCommand();
 		command.execute(model);

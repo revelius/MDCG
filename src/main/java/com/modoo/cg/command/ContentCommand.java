@@ -16,8 +16,8 @@ public class ContentCommand implements Command {
 		// TODO Auto-generated method stub
 		Map<String, Object> map=model.asMap();
 		HttpServletRequest request=(HttpServletRequest)map.get("request");
-		String id=request.getParameter("id");
-		
+		String id=request.getParameter("bId");
+		System.out.println("aa"+id);
 		Dao dao=new Dao();
 		Dto dto=dao.constentView(id);
 		

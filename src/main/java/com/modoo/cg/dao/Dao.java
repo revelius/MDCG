@@ -24,6 +24,7 @@ public class Dao {
 	}
 	
 	public Dto constentView(String strId) {
+		//int strid = Integer.parseInt(strId);
 		upHit(strId);
 		String query="select * from free_board where id= "+strId;
 		return template.queryForObject(query, new BeanPropertyRowMapper<Dto>(Dto.class));
@@ -127,7 +128,8 @@ public class Dao {
 	}
 	
 	private void upHit(final String id) {
-		String query="update freeboard set hit=hit+1 where id=?";
+		System.out.println(id);
+		String query="update free_board set hit=hit+1 where id=?";
 		template.update(query, new PreparedStatementSetter(){
 			public void setValues(PreparedStatement ps) throws SQLException{
 				ps.setInt(1, Integer.parseInt(id));
