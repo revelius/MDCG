@@ -79,6 +79,34 @@ public class NaverLoginBO {
 		}
 		return null;
 	}
+public OAuth2AccessToken getReflashToken(HttpSession session, String code, String state) throws IOException{
+		
+		/* Callback으로 전달받은 세선검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인 */
+		String sessionState = getSession(session);
+		if(StringUtils.pathEquals(sessionState, state)){
+		
+			OAuth20Service oauthService = new ServiceBuilder()
+					.apiKey(CLIENT_ID)
+					.apiSecret(CLIENT_SECRET)
+					
+					
+					.build(NaverLoginApi.instance());
+					
+			/* Scribe에서 제공하는 AccessToken 획득 기능으로 네아로 Access Token을 획득 */
+			OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
+
+			
+			String get_Atoken = accessToken.getAccessToken();
+			//setSession(ACCESS_TOKEN,get_Atoken);
+			
+			setTokenSession(session,get_Atoken);
+			
+			return accessToken;
+		}
+		return null;
+	}
+	
+	
 	
 	
 	/* 세션 유효성 검증을 위한 난수 생성기 */

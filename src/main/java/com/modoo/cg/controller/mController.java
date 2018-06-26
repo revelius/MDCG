@@ -2,6 +2,7 @@ package com.modoo.cg.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -79,13 +80,14 @@ public class mController {
 		return "register";
 	}
 	
-	@RequestMapping("/list")
+	@RequestMapping("/list/{curPage}")
 	public String list(@RequestParam(defaultValue="title") String searchOption ,
 			@RequestParam(defaultValue="") String keyword, 
-			@RequestParam(defaultValue="1") int curPage ,
+			@PathVariable("curPage") int curPage ,@RequestParam(defaultValue="")String sc,
 			Model model) {
 		
 		System.out.println("list()");
+		
 		
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("keyword", keyword);
@@ -113,7 +115,7 @@ public class mController {
 		command.execute(model);
 		
 		
-		return "redirect:list";
+		return "redirect:list/1";
 	}
 	
 	@RequestMapping("content_view")
@@ -135,7 +137,7 @@ public class mController {
 		command = new ModifyCommand();
 		command.execute(model);
 		
-		return "redirect:list";
+		return "redirect:list/1";
 	}
 	
 	@RequestMapping("/reply_view")
@@ -157,7 +159,7 @@ public class mController {
 		command = new ReplyCommand();
 		command.execute(model);
 		
-		return "redirect:list";
+		return "redirect:list/1";
 	}
 	
 	@RequestMapping("/delete")
@@ -168,7 +170,7 @@ public class mController {
 		command = new DeleteCommand();
 		command.execute(model);
 		
-		return "redirect:list";
+		return "redirect:list/1";
 	}
 	
 	/* NaverLoginBO */

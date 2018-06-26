@@ -59,6 +59,25 @@ public class Dao {
 		});
 	}
 	
+	
+	//게시판 글
+	public ArrayList<Dto> listsize(final int indexstart , final int pagesize){
+		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
+		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
+	}
+	//게시판 제목 검색
+	public ArrayList<Dto> listtitleSearch(final int indexstart , final int pagesize ,final String keyword ){
+		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%' order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
+		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
+	}
+	public ArrayList<Dto> listtitlesize(final String keyword ){
+		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%'";
+		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
+	}
+	
+	
+	
+	//게시글 카운트
 	public ArrayList<Dto> list(){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by cgroup desc, step asc";
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));

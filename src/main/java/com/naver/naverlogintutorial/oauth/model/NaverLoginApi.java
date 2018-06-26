@@ -25,4 +25,12 @@ public class NaverLoginApi extends DefaultApi20 {
  	protected String getAuthorizationBaseUrl() {
  		return "https://nid.naver.com/oauth2.0/authorize";
  	}
+
+	@Override
+	public String getRefreshTokenEndpoint() {
+		// TODO Auto-generated method stub
+		return "https://nid.naver.com/oauth2.0/token?grant_type=refresh_token";
+	}
+ 	
+ 	
 }

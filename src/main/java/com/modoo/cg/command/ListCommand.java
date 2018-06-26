@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 
 import com.modoo.cg.dao.Dao;
 import com.modoo.cg.dto.Dto;
+import com.modoo.cg.paging.page;
 
 public class ListCommand implements Command {
 
@@ -31,38 +32,49 @@ public class ListCommand implements Command {
 		
 		Dao dao=new Dao();
 		ArrayList<Dto> dtos;
+		ArrayList<Dto> dto;
 		System.out.println(keyword.equals(""));
 		if(keyword.equals("")||searchOption.equals("")) {
-			
+			//그냥 나올때..
 			dtos=dao.list();
-			int listlangth= dao.list().size();
+			int listlangth = dao.list().size();
 			
 			System.out.println("listlangth : "+listlangth);
 			
+			page p = new page(listlangth,curPage);
 			
+			System.out.println("startindex :"+ p.getStartIndex());
+			System.out.println("pagesize :"+p.getPageSize());
 			
-			/* 검색 구현중...
-			 * Map<String,Object> viewmap = new HashMap<String,Object>();
+			dto = dao.listsize( p.getStartIndex(), p.getPageSize());
 			
-			viewmap.put("list", list);
-			viewmap.put("count", list);
-			viewmap.put("searchOption", list);
-			viewmap.put("keyword", list);
-			viewmap.put("boardPage", list);
+			Map<String,Object> vm = new HashMap<String,Object>();
 			
-			*/
+			vm.put("list",dto);
+			vm.put("listcnt", listlangth);
+			vm.put("p",p);
 			
+			model.addAttribute("vm",vm);
 			
-			model.addAttribute("list", dtos);
-		}else {
+		}else if( !keyword.equals("") && searchOption.equals("title") ) {  
+			//제목 검색시..
 			
-			/*
-			dtos=dao.list();
-			int listlangth= dao.list().size();
+			dtos=dao.listtitlesize(keyword);
+			int listlangth = dao.listtitlesize(keyword).size(); 
 			
-			System.out.println("listlangth : "+listlangth);
+			page  p = new page(listlangth,curPage);
 			
-			model.addAttribute("list", dtos);*/
+			dto = dao.listtitleSearch( p.getStartIndex(), p.getPageSize(), keyword);
+			
+			Map<String,Object> vm = new HashMap<String,Object>();
+			
+			vm.put("list",dto);
+			vm.put("listcnt", listlangth);
+			vm.put("p",p);
+			vm.put("keyword", keyword);
+			vm.put("searchOption", searchOption);
+			model.addAttribute("vm",vm);
+			
 		}
 		
 		
