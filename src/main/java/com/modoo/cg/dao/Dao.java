@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -69,7 +70,9 @@ public class Dao {
 	
 	//게시판 글
 	public ArrayList<Dto> listsize(final int indexstart , final int pagesize){
-		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
+		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize)+" OFFSET "+indexstart;
+		System.out.println("pagesize+indexstart : " + (pagesize+indexstart));
+		System.out.println("indexstart : " + indexstart);
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
 	//게시글 카운트

@@ -21,10 +21,12 @@ public class ListCommand implements Command {
 		Integer curPage1=(Integer)map.get("curPage");
 		String keyword1=(String)map.get("keyword");
 		String searchOption1=(String)map.get("searchOption");
+		String limit1=(String)map.get("limit");
 		
 		int curPage=curPage1.intValue();
 		String keyword=keyword1.toString();
 		String searchOption=searchOption1.toString();
+		String limit = limit1.toString();
 		
 		System.out.println("curPage : "+curPage);
 		System.out.println("keyword : "+keyword);
@@ -34,6 +36,8 @@ public class ListCommand implements Command {
 		
 		ArrayList<Dto> dto;
 		System.out.println(keyword.equals(""));
+		
+		
 		if(keyword.equals("")||searchOption.equals("")) {
 			//그냥 나올때..
 			
@@ -53,6 +57,13 @@ public class ListCommand implements Command {
 			vm.put("list",dto);
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
+			
+			if(!limit.equals("")) {
+				
+				vm.put("limit", limit);
+				
+			}
+			
 			
 			model.addAttribute("vm",vm);
 			

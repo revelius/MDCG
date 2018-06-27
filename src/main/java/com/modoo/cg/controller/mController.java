@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.modoo.cg.command.*;
+import com.modoo.cg.limit.minutes;
 import com.modoo.cg.util.Constant;
 import com.naver.naverlogintutorial.oauth.bo.NaverLoginBO;
 
@@ -84,14 +85,17 @@ public class mController {
 	public String list(@RequestParam(defaultValue="title") String searchOption ,
 			@RequestParam(defaultValue="") String keyword, 
 			@PathVariable("curPage") int curPage ,@RequestParam(defaultValue="")String sc,
-			Model model) {
+			Model model,HttpSession session,@RequestParam(defaultValue="") String limit) {
 		
 		System.out.println("list()");
 		
+		String a =(String) session.getAttribute("writeTime");
 		
+		System.out.println(a);
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
+		model.addAttribute("limit", limit);
 		
 		command=new ListCommand();
 		command.execute(model);
@@ -100,15 +104,40 @@ public class mController {
 	}
 	
 	@RequestMapping("/write_view")
-	public String write_view(Model model) {
-		System.out.println("write_view()");
+	public String write_view(Model model,HttpSession session) throws java.text.ParseException {
+		minutes m = new minutes();
+		String time = (String) session.getAttribute("writeTime");
+		System.out.println(time);
 		
-		return "write_view";
+		if(time == null || time.equals("") ) {
+			
+			return "write_view";
+			
+		}else {
+			
+		
+			if(!m.equalsTime(time)) {
+				
+				return "redirect:list/1?limit=2";
+				
+			}else {
+				
+				session.removeAttribute("writeTime");
+				
+				return "write_view";
+			}
+		}
 	}
 	
 	@RequestMapping("/write")
-	public String write(HttpServletRequest request, Model model) {
+	public String write(HttpServletRequest request, Model model,HttpSession session) {
 		System.out.println("write()");
+		
+		minutes m = new minutes();
+		
+		session.setAttribute("writeTime",m.getTime());
+		System.out.println(m.getTime());
+		
 		
 		model.addAttribute("request", request);
 		command = new WriteCommand();
@@ -199,7 +228,7 @@ public class mController {
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
 		
 		naverLoginBO.naverprofile(session);
-	
+		
 		 naverLoginBO.refresh(session);
 		return new ModelAndView("callback", "result", apiResult);
 	}
@@ -207,6 +236,8 @@ public class mController {
     
    @RequestMapping("/logout")
    	public ModelAndView logout(HttpSession session) throws IOException {
+	   
+	   
 	  
 	   String oauthToken = naverLoginBO.logout(session);
 	   

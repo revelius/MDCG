@@ -8,6 +8,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+	<script>
+		if( ${vm.limit} == 2){
+			alert("2분간 글쓰기를 사용 할수 없습니다.");
+		} 
+	</script>
 </head>
 <body>
 	
