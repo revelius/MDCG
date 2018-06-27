@@ -31,12 +31,12 @@ public class ListCommand implements Command {
 		System.out.println("searchOption : "+searchOption);
 		
 		Dao dao=new Dao();
-		ArrayList<Dto> dtos;
+		
 		ArrayList<Dto> dto;
 		System.out.println(keyword.equals(""));
 		if(keyword.equals("")||searchOption.equals("")) {
 			//그냥 나올때..
-			dtos=dao.list();
+			
 			int listlangth = dao.list().size();
 			
 			System.out.println("listlangth : "+listlangth);
@@ -59,7 +59,7 @@ public class ListCommand implements Command {
 		}else if( !keyword.equals("") && searchOption.equals("title") ) {  
 			//제목 검색시..
 			
-			dtos=dao.listtitlesize(keyword);
+			
 			int listlangth = dao.listtitlesize(keyword).size(); 
 			
 			page  p = new page(listlangth,curPage);
@@ -74,6 +74,12 @@ public class ListCommand implements Command {
 			vm.put("keyword", keyword);
 			vm.put("searchOption", searchOption);
 			model.addAttribute("vm",vm);
+			
+		}else if( !keyword.equals("") && searchOption.equals("content")  ) {
+			
+			
+			
+			
 			
 		}
 		

@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import com.modoo.cg.dto.Dto;
 import com.modoo.cg.util.Constant;
+import com.mysql.cj.jdbc.BlobFromLocator;
 
 public class Dao {
 	DataSource dataSource;
@@ -39,13 +40,17 @@ public class Dao {
 				pstmt.setString(2, title);
 				pstmt.setString(3, content);
 				
+				
 				return pstmt;
 			}
 		});
+		
 	}
 	
 	//회원가입 부분
 	public void register(final String name, final String title, final String content) {
+		
+		
 		template.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
 				String query = "insert into free_board (name, title, content, hit, cgroup, step, indent) values (?, ?, ?, 0, 0, 0, 0)";
@@ -54,9 +59,11 @@ public class Dao {
 				pstmt.setString(2, title);
 				pstmt.setString(3, content);
 				
+			
 				return pstmt;
 			}
 		});
+		
 	}
 	
 	
@@ -65,11 +72,21 @@ public class Dao {
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
+	//게시글 카운트
+	public ArrayList<Dto> list(){
+		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by cgroup desc, step asc";
+		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
+	}
+		
+	
 	//게시판 제목 검색
 	public ArrayList<Dto> listtitleSearch(final int indexstart , final int pagesize ,final String keyword ){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%' order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
+	
+	
+	//게시판 제목 검색 카운트
 	public ArrayList<Dto> listtitlesize(final String keyword ){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%'";
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
@@ -77,11 +94,6 @@ public class Dao {
 	
 	
 	
-	//게시글 카운트
-	public ArrayList<Dto> list(){
-		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by cgroup desc, step asc";
-		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
-	}
 	
 	public void modify(final String id, final String  name, final String title, final String content) {
 		String query = "update free_board set name = ?, title = ?, content = ? where id = ?";

@@ -75,9 +75,8 @@
 	<form action="../list/1" method="get">
 		<select name="searchOption">
 			<option value="title">제목</option>
-			<option value=""></option>
-			<option></option>
-			<option></option>
+			<option value="content">내용</option>
+			<option value="titelcontent">제목  + 내용</option>
 		</select>
 		<input type="text" name="keyword" value="${vm.keyword != null ? vm.keyword : "" }">
 		<input type="hidden" name="sc" value="search">
