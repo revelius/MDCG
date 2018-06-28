@@ -92,6 +92,7 @@ public class mController {
 		String a =(String) session.getAttribute("writeTime");
 		
 		System.out.println(a);
+		model.addAttribute("sessionNull", a);
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchOption", searchOption);
@@ -229,7 +230,7 @@ public class mController {
 		
 		naverLoginBO.naverprofile(session);
 		
-		 naverLoginBO.refresh(session);
+		naverLoginBO.refresh(session);
 		return new ModelAndView("callback", "result", apiResult);
 	}
 	

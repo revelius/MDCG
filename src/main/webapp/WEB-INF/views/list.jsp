@@ -9,13 +9,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 	<script>
-		if( ${vm.limit} == 2){
-			alert("2분간 글쓰기를 사용 할수 없습니다.");
-		} 
+	
+		var error= ${vm.limit == 2 ? true : false} ;
+	
+		var errorNull = ${vm.sNull == 1 ? false : true};
+		
+		if( errorNull ){
+			
+			if( error ){
+				
+				alert("2분간 글쓰기를 사용 할수 없습니다.");
+				
+				location.href= "../list/1";
+				
+			} 
+			
+		}
+		
+		function fn_paging(a){
+			
+			location.href= "../list/"+a;
+			
+		}
 	</script>
 </head>
 <body>
-	
+
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
 		<tr>
 			<td>번호</td>

@@ -22,11 +22,13 @@ public class ListCommand implements Command {
 		String keyword1=(String)map.get("keyword");
 		String searchOption1=(String)map.get("searchOption");
 		String limit1=(String)map.get("limit");
+		String sessionNull=(String)map.get("sessionNull");
 		
 		int curPage=curPage1.intValue();
 		String keyword=keyword1.toString();
 		String searchOption=searchOption1.toString();
 		String limit = limit1.toString();
+		String sessionNull1=sessionNull;
 		
 		System.out.println("curPage : "+curPage);
 		System.out.println("keyword : "+keyword);
@@ -57,6 +59,11 @@ public class ListCommand implements Command {
 			vm.put("list",dto);
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
+			if(sessionNull1 == null) {
+				
+				vm.put("sNull", 1); 
+			}
+			
 			
 			if(!limit.equals("")) {
 				

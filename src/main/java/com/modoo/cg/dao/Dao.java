@@ -48,26 +48,6 @@ public class Dao {
 		
 	}
 	
-	//회원가입 부분
-	public void register(final String name, final String title, final String content) {
-		
-		
-		template.update(new PreparedStatementCreator() {
-			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
-				String query = "insert into free_board (name, title, content, hit, cgroup, step, indent) values (?, ?, ?, 0, 0, 0, 0)";
-				PreparedStatement pstmt = con.prepareStatement(query);
-				pstmt.setString(1, name);
-				pstmt.setString(2, title);
-				pstmt.setString(3, content);
-				
-			
-				return pstmt;
-			}
-		});
-		
-	}
-	
-	
 	//게시판 글
 	public ArrayList<Dto> listsize(final int indexstart , final int pagesize){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize)+" OFFSET "+indexstart;
@@ -167,6 +147,23 @@ public class Dao {
 		template.update(query, new PreparedStatementSetter(){
 			public void setValues(PreparedStatement ps) throws SQLException{
 				ps.setInt(1, Integer.parseInt(id));
+			}
+		});
+	}
+	public void register(final String id, final String nickname, final String email) {
+		System.out.println("register()");
+		template.update(new PreparedStatementCreator() {
+			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
+				String query = 
+						"insert into register (id, nickname, email, create_date, grade, exp) select 'test', ?, ?, now(), '슛돌이', 0 from dual where not exists (select  id from register where id='gom') ";
+				PreparedStatement pstmt = con.prepareStatement(query);
+				/*pstmt.setString(1, id);*/
+				pstmt.setString(1, nickname);
+				pstmt.setString(2, email);
+				/*pstmt.setString(3, id);*/
+				System.out.println(query);
+				
+				return pstmt;
 			}
 		});
 	}

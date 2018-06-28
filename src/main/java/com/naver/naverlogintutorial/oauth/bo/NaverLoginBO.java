@@ -20,7 +20,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
-
+import com.modoo.cg.dao.Dao;
 import com.naver.naverlogintutorial.oauth.model.NaverLoginApi;
 
 public class NaverLoginBO {
@@ -237,6 +237,7 @@ public OAuth2AccessToken getReflashToken(HttpSession session, String code, Strin
 	}
 	
 	public void naverprofile(HttpSession session) {
+		System.out.println("naverprofile()");
 		
 		String token = getTokenSession(session);
 		
@@ -275,6 +276,8 @@ public OAuth2AccessToken getReflashToken(HttpSession session, String code, Strin
 			String name=(String) dataObject.get("nickname");
 			String email=(String) dataObject.get("email");
 			System.out.println(name +"   "+ email);
+			Dao Dao=new Dao();
+			Dao.register(null, name, email);
 			
 			
 		} catch(Exception e) {

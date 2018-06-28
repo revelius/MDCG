@@ -1,12 +1,14 @@
+/*DB제작용 쿼리*/
 create database mg;
 
 use mg;
 
+/*자유게시판 제작용*/
 create table free_board(
 	id integer(4) primary key auto_increment,
 	name varchar(10),
 	title varchar(50),
-	content varchar(100),
+	content text,
 	date date,
 	hit Integer(4),
 	cgroup Integer(4),
@@ -14,20 +16,49 @@ create table free_board(
 	indent Integer(4)
 );
 
+/*자유게시판용 쿼리*/
 insert into free_board (
 	id, name, title, content, hit, cgroup, step, indent
-) values (1111, "test", "title", "content", 0, 0 , 0, 0
+) values (1112, "test", "title", "content", 0, 0 , 0, 0
 );
 
+/*회원가입연동용 쿼리*/
 create table register(
-	num integer primary key auto_increment,
-	id varchar(20) ,
-	pass varchar(20),
-	email varchar(50),
-	name varchar(20),
-	date date,
-	hit Integer(4),
-	cgroup Integer(4),
-	step Integer(4),
-	indent Integer(4)
+  num integer primary key not null auto_increment,
+  id varchar(50),
+  nickname varchar(50),
+  email varchar(50),
+  create_date varchar(50),
+  grade varchar(50),
+  exp integer
 );
+
+/*회원 추가용 쿼리*/
+insert into register (
+	id, nickname, email, create_date, grade, exp
+) select "주민인증", "김주민", "grizzly@bear.gom", now(), "왕곰", 1566 from dual  
+where not exists ( 
+    select  id from register
+    where id= "주민인증"
+);
+
+
+/*쪽지 쿼리*/
+create table mail(
+	num integer primary key not null auto_increment,
+	post varchar(50),
+	send varchar(50),
+	contents varchar(50),
+	post_get boolean,
+	send_get boolean,
+	post_date varchar(50),
+	send_date varchar(50),
+	post_del boolean,
+	send_del boolean
+);
+
+/*쪽지 추가용 쿼리*/
+insert into mail(
+	post, send, contents, post_get, send_get, post_date, send_date, post_del, send_del
+) values (
+	"test","test1","testest","1","1", now(), now(),"1","1");
