@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import com.modoo.cg.dto.Dto;
+import com.modoo.cg.dto.MailDto;
 import com.modoo.cg.util.Constant;
 import com.mysql.cj.jdbc.BlobFromLocator;
 
@@ -150,6 +151,41 @@ public class Dao {
 			}
 		});
 	}
+	
+	//==================================================================================
+	//여기서부터는 쪽지 구현부분입니다. 죄송합니다만 건드리지 말아주시죠
+	//==================================================================================
+	//당신을 파.괘.할.지.도 모르니까요
+	//==================================================================================
+	
+	public ArrayList<MailDto> mailList(){
+		String query = "select post, send, contents, post_get, send_get, post_date, send_date, post_del, send_del from mail order by num desc";
+		return (ArrayList<MailDto>) template.query(query, new BeanPropertyRowMapper<MailDto>(MailDto.class));
+	}
+	
+	public ArrayList<MailDto> mlistsize(final int indexstart , final int pagesize){
+		String query = "select post, send, contents, post_get, send_get, post_date, send_date, post_del, send_del from mail order by num desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
+		return (ArrayList<MailDto>) template.query(query, new BeanPropertyRowMapper<MailDto>(MailDto.class));
+	}
+	
+	public void mailwrite(final String post, final String send, final String contents) {
+		System.out.println("mailwrite(on)");
+		template.update(new PreparedStatementCreator() {
+			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
+				String query = "insert into mail (post, send, contents, post_get, send_get, post_date, send_date, post_del, send_del) values (?, ?, ?, '0', '0', now(), now(), '0', '0')";
+				PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setString(1, post);
+				pstmt.setString(2, send);
+				pstmt.setString(3, contents);
+				
+				return pstmt;
+			}
+		});
+	}
+	//==================================================================================
+	//쪽지 구현부분 오나홀료
+	//==================================================================================
+	
 	public void register(final String id, final String nickname, final String email) {
 		System.out.println("register()");
 		template.update(new PreparedStatementCreator() {

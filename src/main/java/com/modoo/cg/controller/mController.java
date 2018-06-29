@@ -29,21 +29,6 @@ public class mController {
 	
 	public JdbcTemplate template;
 	
-	/*
-	친절한 영준이형이 주석으로 설명해준다
-	JdbcTemplate는  servlet-context.xml에 지정되어 있다. 가서 보면 ref="dataSource"라고 되어 있는데
-	dataSource가 뭐냐면 connection하고 root하고 등등 연결되어있는것들이 설정되어 있는 것이 보임 JdbcTemplate은 이런것들을 미리 가지고 있어서
-	얘 불러다 쓰면 Connection, PreparedStatement, ResultSet을 쓸 필요가 없다.
-	
-	Dao.java 들어가보면
-	template.qieryForObject(쿼리문,new BeanPropertyRowMapper<매핑타입>(매핑위지)) 라고 보일텐데
-	이게 쿼리문 날려서 VO에 저장했다가 뽑아오는 역할을 전부 다하고 있는거임 게다가 mapper라서 "key",value로 값을 던지는 탓에 
-	resultSet.get("key"); 으로 key를 던지지 않아도 해당하는 key에 맞는 VO에 값을 저장해주는 역할을 함
-	
-	한마디로 졸라 킹왕짱인데 
-	if(connection!=null)connection.close(); 까지 해주는 막강한 능력을 가지고 있음
-	*/
-	
 	@Autowired
 	public void setTemplat(JdbcTemplate template) {
 		this.template=template;
@@ -233,6 +218,67 @@ public class mController {
 		naverLoginBO.refresh(session);
 		return new ModelAndView("callback", "result", apiResult);
 	}
+    
+    /*=========================================*/
+    /*여기서부터는 쪽지함입니다*/
+    /*=========================================*/
+    @RequestMapping("/mailList/{curPage}")
+	public String mailList(	@PathVariable("curPage") int curPage, Model model) {
+		System.out.println("mailList()");
+		model.addAttribute("curPage", curPage);
+		
+		command=new MailListCom();
+		command.execute(model);
+		
+		return "mailList";
+	}
+    
+	@RequestMapping("/mailWrite_view")
+	public String mailWrite_view(Model model) {
+		System.out.println("write_view()");
+		
+		return "mailWrite_view";
+	}
+    
+    
+	@RequestMapping("/mailWrite")
+	public String mailWrite(HttpServletRequest request, Model model) {
+		System.out.println("mailWrite(start)");
+		
+		model.addAttribute("request", request);
+		command = new MailWriteCom();
+		command.execute(model);
+		
+		return "redirect:mailList/1";
+	}
+    /*=========================================*/
+    /*여기까지가 쪽지함입니다*/
+    /*=========================================*/
+	
+    /*=========================================*/
+    /*콜로세움*/
+    /*=========================================*/	
+	@RequestMapping("/coloseumList/{curPage}")
+	public String coloseumlist(@RequestParam(defaultValue="title") String searchOption ,
+			@RequestParam(defaultValue="") String keyword, 
+			@PathVariable("curPage") int curPage ,@RequestParam(defaultValue="")String sc,
+			Model model) {
+		
+		System.out.println("coloseumList()");
+		
+		
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchOption", searchOption);
+		
+		command=new ListCommand();
+		command.execute(model);
+		
+		return "coloseumList";
+	}
+    /*=========================================*/
+    /*콜로세움 끝*/
+    /*=========================================*/	
 	
     
    @RequestMapping("/logout")
