@@ -155,12 +155,12 @@ public class Dao {
 		template.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
 				String query = 
-						"insert into register (id, nickname, email, create_date, grade, exp) select 'test', ?, ?, now(), '슛돌이', 0 from dual where not exists (select  id from register where id='gom') ";
+						"insert into register (id, nickname, email, create_date, grade, exp) select ?, ?, ?, now(), '슛돌이', 0 from dual where not exists (select  id from register where id=?) ";
 				PreparedStatement pstmt = con.prepareStatement(query);
-				/*pstmt.setString(1, id);*/
-				pstmt.setString(1, nickname);
-				pstmt.setString(2, email);
-				/*pstmt.setString(3, id);*/
+				pstmt.setString(1, id);
+				pstmt.setString(2, nickname);
+				pstmt.setString(3, email);
+				pstmt.setString(4, id);
 				System.out.println(query);
 				
 				return pstmt;

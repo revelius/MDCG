@@ -273,11 +273,12 @@ public OAuth2AccessToken getReflashToken(HttpSession session, String code, Strin
 
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(ab);
 			JSONObject dataObject = (JSONObject) jsonObject.get("response");
+			String id=(String) dataObject.get("id");
 			String name=(String) dataObject.get("nickname");
 			String email=(String) dataObject.get("email");
 			System.out.println(name +"   "+ email);
 			Dao Dao=new Dao();
-			Dao.register(null, name, email);
+			Dao.register(id, name, email);
 			
 			
 		} catch(Exception e) {
