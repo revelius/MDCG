@@ -4,15 +4,15 @@ import java.sql.Timestamp;
 
 public class Dto {
 	
-	int id;
-	String name;
-	String title;
-	String content;
-	Timestamp date;
-	int hit;
-	int group;
-	int step;
-	int indent;
+	int id; // primary key auto_increment 게시판 글번호임
+	String name; // 작성자 이름
+	String title; // 제목
+	String content; // 내용
+	Timestamp date; // 작성일
+	int hit; // 조회수
+	int group; // 첫번째 댓글의 번호
+	int step; // 댓글의 순서
+	int indent; // 댓글의 깊이
 	
 	String tes="test"; //깃허브 연동용
 	

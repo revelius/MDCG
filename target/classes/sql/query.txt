@@ -42,6 +42,9 @@ where not exists (
     where id= "주민인증"
 );
 
+/*회원 관리용 쿼리*/
+update register set nickname="꾸러기수비대" where id="곰";
+
 
 /*쪽지 쿼리*/
 create table mail(
