@@ -15,7 +15,7 @@
 		var errorNull = ${vm.sNull == 1 ? false : true};
 		
 		if( errorNull ){
-			
+			//처리용
 			if( error ){
 				
 				alert("2분간 글쓰기를 사용 할수 없습니다.");
