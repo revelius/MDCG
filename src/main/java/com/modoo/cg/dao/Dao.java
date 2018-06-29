@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import com.modoo.cg.dto.Dto;
 import com.modoo.cg.dto.MailDto;
+import com.modoo.cg.dto.RegisterDto;
 import com.modoo.cg.util.Constant;
 import com.mysql.cj.jdbc.BlobFromLocator;
 
@@ -202,5 +203,15 @@ public class Dao {
 				return pstmt;
 			}
 		});
+	}
+	
+	public ArrayList<RegisterDto> myinfo(final String id){
+		System.out.println("myinfo()");
+		String query = "select id, nickname, email, create_date, grade, exp from register";// where id="+id;
+		
+		System.out.println("myinfo(). id="+id);
+		System.out.println("myinfo() query"+query);
+		
+		return (ArrayList<RegisterDto>) template.query(query, new BeanPropertyRowMapper<RegisterDto>(RegisterDto.class));
 	}
 }

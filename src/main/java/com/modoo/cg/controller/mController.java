@@ -25,12 +25,21 @@ import com.naver.naverlogintutorial.oauth.bo.NaverLoginBO;
 
 @Controller
 public class mController {
+	HttpSession hs;
+
 	Command command;
 	
 	public JdbcTemplate template;
 	
+	
+	
 	@Autowired
 	public void setTemplat(JdbcTemplate template) {
+		System.out.println("template생성이 언제니?()");
+		
+		CustomSession cs=new CustomSession();
+		hs=cs.addSession();
+		
 		this.template=template;
 		Constant.template=this.template;
 	}
@@ -47,8 +56,7 @@ public class mController {
 	//메인페이지
 	@RequestMapping("/")
 	public String home(Model model) {
-		
-		
+		System.out.println("home(Model model) ");
 		
 		return "index";
 	}
@@ -284,11 +292,17 @@ public class mController {
     /*=========================================*/	
 	
 	@RequestMapping("/myinfo")
-	public String myinfo() {
-		System.out.println("myinfo");
+	public String myinfo(Model model) {//, HttpSession session) {
+		System.out.println("myinfo()");
+		String id;
+		//id=(String)session.getAttribute("id");
+		//model.addAttribute("id", id);
+		command=new MyInfoCom();
+		command.execute(model);
+		
 		return "myinfo";
 	}
-	
+		
 	
     /*=========================================*/
     /*회원정보 조회  / 수정 시작 ㅃㄴㅃㄴ*/

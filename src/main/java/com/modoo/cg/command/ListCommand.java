@@ -94,18 +94,8 @@ public class ListCommand implements Command {
 			model.addAttribute("vm",vm);
 			
 		}else if( !keyword.equals("") && searchOption.equals("content")  ) {
-			
-			
-			
-			
-			
+				
 		}
-		
-		
-		
-		
-		
-		
 	}
 
 }

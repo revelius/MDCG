@@ -22,6 +22,7 @@ public class ContentCommand implements Command {
 		Dto dto=dao.constentView(id);
 		
 		model.addAttribute("content_view", dto);
+		
 	}
 
 }
