@@ -126,7 +126,7 @@ public class mController {
 	@RequestMapping("/write")
 	public String write(HttpServletRequest request, Model model,HttpSession session) {
 		System.out.println("write()");
-		
+		//
 		minutes m = new minutes();
 		
 		session.setAttribute("writeTime",m.getTime());
