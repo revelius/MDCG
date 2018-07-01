@@ -51,7 +51,7 @@
 						<td>${dto.name}</td>
 						<td>
 							<c:forEach begin="1" end="${dto.indent}">-</c:forEach>
-							<a href="../content_view?bId=${dto.id}">${dto.title}</a></td>
+							<a href="../content_view/${vm.curP}/${dto.id}">${dto.title}</a></td>
 						<td>${dto.date}</td>
 						<td>${dto.hit}</td>
 					</tr>

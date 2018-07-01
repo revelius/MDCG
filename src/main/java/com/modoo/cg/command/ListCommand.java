@@ -56,6 +56,7 @@ public class ListCommand implements Command {
 			
 			Map<String,Object> vm = new HashMap<String,Object>();
 			
+			vm.put("curP",curPage);
 			vm.put("list",dto);
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
@@ -86,11 +87,13 @@ public class ListCommand implements Command {
 			
 			Map<String,Object> vm = new HashMap<String,Object>();
 			
+			vm.put("curP",curPage);
 			vm.put("list",dto);
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
 			vm.put("keyword", keyword);
 			vm.put("searchOption", searchOption);
+			
 			model.addAttribute("vm",vm);
 			
 		}else if( !keyword.equals("") && searchOption.equals("content")  ) {

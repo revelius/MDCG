@@ -141,11 +141,20 @@ public class mController {
 		return "redirect:list/1";
 	}
 	
-	@RequestMapping("content_view")
-	public String content_view(HttpServletRequest request, Model model) {
+	@RequestMapping("/content_view/{curPage}/{bID}")
+	public String content_view(@PathVariable("curPage") int curPage ,@PathVariable("bID") int bID ,HttpServletRequest request, Model model,HttpSession session, @RequestParam(defaultValue="") String limit) {
 		System.out.println("content_view()");
 		
+		String a =(String) session.getAttribute("writeTime");
+		
+		System.out.println(a);
+		model.addAttribute("sessionNull", a);
 		model.addAttribute("request", request);
+		model.addAttribute("bID",bID);
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("limit", limit);
+		
+		
 		command = new ContentCommand();
 		command.execute(model);
 		
