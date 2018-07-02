@@ -11,7 +11,7 @@
 
 function fn_paging(a){
 	
-	location.href= "../list/"+a;
+	location.href= "../../list/"+a;
 	
 }
 
@@ -51,7 +51,7 @@ function fn_paging(a){
 	
 	<br />
 	<br />
-	
+	<!-- asdasd --> 
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
 		<tr>
 			<td>번호</td>
@@ -68,7 +68,7 @@ function fn_paging(a){
 						<td>${dto.name}</td>
 						<td>
 							<c:forEach begin="1" end="${dto.indent}">-</c:forEach>
-							<a href="../../content_view/${vm.curP}/${dto.id}">${dto.title}</a></td>
+							<a href="../../content_view/${vm.curP}/${dto.id}${vm.getSearch ne '' ? vm.getSearch : null }">${dto.title}</a></td>
 						<td>${dto.date}</td>
 						<td>${dto.hit}</td>
 					</tr>
@@ -113,6 +113,16 @@ function fn_paging(a){
 	  	</c:otherwise>
 		</c:choose>
      </div>
-	
+	<form action="../../list/1" method="get">
+		<select name="searchOption">
+			<option value="title" ${vm.searchOption eq 'title' ? 'selected' : null}  >제목</option> 
+			<option value="content" ${vm.searchOption eq 'content' ? 'selected' : null} >본문</option>
+			<option value="titelcontent" ${vm.searchOption eq 'titelcontent' ? 'selected' : null} >제목  + 본문</option>
+			<option value="nameid">글쓴이</option>
+		</select>
+		<input type="text" name="keyword" value="${vm.keyword != null ? vm.keyword : null }">
+		<input type="hidden" name="sc" value="search">
+		<button type="submit">검색</button>
+	</form>
 </body>
 </html>

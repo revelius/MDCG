@@ -15,7 +15,7 @@
 		var errorNull = ${vm.sNull == 1 ? false : true};
 		
 		if( errorNull ){
-			//처리용
+			
 			if( error ){
 				
 				alert("2분간 글쓰기를 사용 할수 없습니다.");
@@ -33,7 +33,7 @@
 		}
 	</script>
 </head>
-<body>
+<body> 
 
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
 		<tr>
@@ -51,7 +51,7 @@
 						<td>${dto.name}</td>
 						<td>
 							<c:forEach begin="1" end="${dto.indent}">-</c:forEach>
-							<a href="../content_view/${vm.curP}/${dto.id}">${dto.title}</a></td>
+							<a href="../content_view/${vm.curP}/${dto.id}${vm.getSearch ne '' ? vm.getSearch : null }">${dto.title}</a></td>
 						<td>${dto.date}</td>
 						<td>${dto.hit}</td>
 					</tr>
@@ -98,14 +98,14 @@
      </div>
 	<form action="../list/1" method="get">
 		<select name="searchOption">
-			<option value="title">제목</option>
-			<option value="content">내용</option>
-			<option value="titelcontent">제목  + 내용</option>
+			<option value="title" ${vm.searchOption eq 'title' ? 'selected' : null}  >제목</option> 
+			<option value="content" ${vm.searchOption eq 'content' ? 'selected' : null} >본문</option>
+			<option value="titelcontent" ${vm.searchOption eq 'titelcontent' ? 'selected' : null} >제목  + 본문</option>
+			<option value="nameid">글쓴이</option>
 		</select>
-		<input type="text" name="keyword" value="${vm.keyword != null ? vm.keyword : "" }">
+		<input type="text" name="keyword" value="${vm.keyword != null ? vm.keyword : null }">
 		<input type="hidden" name="sc" value="search">
 		<button type="submit">검색</button>
 	</form>
-	
 </body>
 </html>

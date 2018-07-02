@@ -65,3 +65,56 @@ insert into mail(
 	post, send, contents, post_get, send_get, post_date, send_date, post_del, send_del
 ) values (
 	"test","test1","testest","1","1", now(), now(),"1","1");
+
+	
+	
+	
+	
+/*댓글 테스트 버전  http://javannspring.tistory.com/68*/
+
+create table test(
+	num integer primary key not null auto_increment,
+	descript varchar(50),
+	groupid int(50),
+	parent int(50),
+	depth int(50),
+	orderid int(50)
+
+);
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("1", 1, 0, 0, 1
+);
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("2", 2, 0, 0, 1
+);
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("3", 3, 0, 0, 1
+);
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("1-1", 1, 1, 1, 2
+);
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("1-1-1", 1, 4, 2, 3
+);
+
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("1-2", 1, 1, 1, 5
+);
+
+insert into test(
+	 descript, groupid, parent, depth, orderid
+) values ("1-1-1", 1, 5, 3, 4
+);
+
+select * from test order by groupid asc , orderid asc ;

@@ -37,10 +37,11 @@ public class ListCommand implements Command {
 		Dao dao=new Dao();
 		
 		ArrayList<Dto> dto;
-		System.out.println(keyword.equals(""));
-		
+		System.out.println((!keyword.equals("")  && searchOption.equals("title") ) +"검색했어");
+		  
 		
 		if(keyword.equals("")||searchOption.equals("")) {
+			System.out.println("아무것도 검색 안했당");
 			//그냥 나올때..
 			
 			int listlangth = dao.list().size();
@@ -77,8 +78,42 @@ public class ListCommand implements Command {
 			
 		}else if( !keyword.equals("") && searchOption.equals("title") ) {  
 			//제목 검색시..
+			System.out.println("검색했엉");
 			
+			int listlangth = dao.listtitlesize(keyword).size(); 
 			
+			page  p = new page(listlangth,curPage);
+			
+			dto = dao.listtitleSearch( p.getStartIndex(), p.getPageSize(), keyword);
+			
+			Map<String,Object> vm = new HashMap<String,Object>();
+			
+			String getSearch="?searchOption="+searchOption+"&keyword="+keyword+"&sc=search";
+			vm.put("curP",curPage);
+			vm.put("list",dto);
+			vm.put("listcnt", listlangth);
+			vm.put("p",p);
+			vm.put("keyword", keyword);
+			vm.put("searchOption", searchOption);
+			vm.put("getSearch", getSearch);
+			if(sessionNull1 == null) {
+						
+				vm.put("sNull", 1); 
+			}
+					
+					
+			if(!limit.equals("")) {
+						
+				vm.put("limit", limit);
+						
+			}
+			
+			model.addAttribute("vm",vm);
+			
+		}else if( !keyword.equals("") && searchOption.equals("content")  ) {
+			
+			//dto 수정 해야함
+
 			int listlangth = dao.listtitlesize(keyword).size(); 
 			
 			page  p = new page(listlangth,curPage);
@@ -93,11 +128,32 @@ public class ListCommand implements Command {
 			vm.put("p",p);
 			vm.put("keyword", keyword);
 			vm.put("searchOption", searchOption);
+			if(sessionNull1 == null) {
+						
+				vm.put("sNull", 1); 
+			}
+					
+					
+			if(!limit.equals("")) {
+						
+				vm.put("limit", limit);
+						
+			}
 			
 			model.addAttribute("vm",vm);
 			
-		}else if( !keyword.equals("") && searchOption.equals("content")  ) {
+			
 				
+		}else if ( !keyword.equals("") && searchOption.equals("titelcontent")  ) {
+			
+			
+			
+			
+		}else if ( !keyword.equals("") && searchOption.equals("nameId")  ) {
+			
+			
+			
+			
 		}
 	}
 

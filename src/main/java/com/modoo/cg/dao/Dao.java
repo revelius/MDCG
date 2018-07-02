@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -17,14 +16,17 @@ import com.modoo.cg.dto.Dto;
 import com.modoo.cg.dto.MailDto;
 import com.modoo.cg.dto.RegisterDto;
 import com.modoo.cg.util.Constant;
-import com.mysql.cj.jdbc.BlobFromLocator;
+
 
 public class Dao {
+	
 	DataSource dataSource;
 	JdbcTemplate template=null;
 	
 	public Dao() {
+		
 		template=Constant.template;
+		
 	}
 	
 	public Dto constentView(String strId) {
@@ -50,28 +52,28 @@ public class Dao {
 		
 	}
 	
-	//게시판 글
+	//寃뚯떆�뙋 湲�
 	public ArrayList<Dto> listsize(final int indexstart , final int pagesize){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by id desc LIMIT "+(pagesize)+" OFFSET "+indexstart;
 		System.out.println("pagesize+indexstart : " + (pagesize+indexstart));
 		System.out.println("indexstart : " + indexstart);
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
-	//게시글 카운트
+	//寃뚯떆湲� 移댁슫�듃
 	public ArrayList<Dto> list(){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board order by cgroup desc, step asc";
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
 		
 	
-	//게시판 제목 검색
+	//寃뚯떆�뙋 �젣紐� 寃��깋
 	public ArrayList<Dto> listtitleSearch(final int indexstart , final int pagesize ,final String keyword ){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%' order by id desc LIMIT "+(pagesize+indexstart)+" OFFSET "+indexstart;
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
 	
 	
-	//게시판 제목 검색 카운트
+	//寃뚯떆�뙋 �젣紐� 寃��깋 移댁슫�듃
 	public ArrayList<Dto> listtitlesize(final String keyword ){
 		String query = "select id, name, title, content, hit, cgroup, step, indent from free_board where title like '%"+keyword+"%'";
 		return (ArrayList<Dto>) template.query(query, new BeanPropertyRowMapper<Dto>(Dto.class));
@@ -154,9 +156,9 @@ public class Dao {
 	}
 	
 	//==================================================================================
-	//여기서부터는 쪽지 구현부분입니다. 죄송합니다만 건드리지 말아주시죠
+	//�뿬湲곗꽌遺��꽣�뒗 履쎌� 援ы쁽遺�遺꾩엯�땲�떎. 二꾩넚�빀�땲�떎留� 嫄대뱶由ъ� 留먯븘二쇱떆二�
 	//==================================================================================
-	//당신을 파.괘.할.지.도 모르니까요
+	//�떦�떊�쓣 �뙆.愿�.�븷.吏�.�룄 紐⑤Ⅴ�땲源뚯슂
 	//==================================================================================
 	
 	public ArrayList<MailDto> mailList(){
@@ -184,7 +186,7 @@ public class Dao {
 		});
 	}
 	//==================================================================================
-	//쪽지 구현부분 오나홀료
+	//履쎌� 援ы쁽遺�遺� �삤�굹��猷�
 	//==================================================================================
 	
 	public void register(final String id, final String nickname, final String email) {
@@ -192,7 +194,7 @@ public class Dao {
 		template.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
 				String query = 
-						"insert into register (id, nickname, email, create_date, grade, exp) select ?, ?, ?, now(), '슛돌이', 0 from dual where not exists (select  id from register where id=?) ";
+						"insert into register (id, nickname, email, create_date, grade, exp) select ?, ?, ?, now(), '�뒟�룎�씠', 0 from dual where not exists (select  id from register where id=?) ";
 				PreparedStatement pstmt = con.prepareStatement(query);
 				pstmt.setString(1, id);
 				pstmt.setString(2, nickname);

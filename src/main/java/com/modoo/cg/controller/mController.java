@@ -37,8 +37,8 @@ public class mController {
 	public void setTemplat(JdbcTemplate template) {
 		System.out.println("template생성이 언제니?()");
 		
-		CustomSession cs=new CustomSession();
-		hs=cs.addSession();
+		/*CustomSession cs=new CustomSession();
+		hs=cs.addSession();*/
 		
 		this.template=template;
 		Constant.template=this.template;
@@ -142,7 +142,10 @@ public class mController {
 	}
 	
 	@RequestMapping("/content_view/{curPage}/{bID}")
-	public String content_view(@PathVariable("curPage") int curPage ,@PathVariable("bID") int bID ,HttpServletRequest request, Model model,HttpSession session, @RequestParam(defaultValue="") String limit) {
+	public String content_view(@PathVariable("curPage") int curPage ,@PathVariable("bID") int bID ,
+			HttpServletRequest request, Model model,HttpSession session,
+			@RequestParam(defaultValue="") String limit ,@RequestParam(defaultValue="title") String searchOption ,
+			@RequestParam(defaultValue="") String keyword,@RequestParam(defaultValue="")String sc) {
 		System.out.println("content_view()");
 		
 		String a =(String) session.getAttribute("writeTime");
@@ -153,6 +156,12 @@ public class mController {
 		model.addAttribute("bID",bID);
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("limit", limit);
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchOption", searchOption);
+		
+		
+		
 		
 		
 		command = new ContentCommand();
