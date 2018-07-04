@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
 function fn_paging(a){
@@ -15,40 +16,102 @@ function fn_paging(a){
 	
 }
 
+/**
+ * 
+ - 댓글 테이블 -
+ cmt_no: 댓글 No (pk)
+ content: 내용
+ parent: parent 댓글 No
+ depth: 1-댓글, 2-대댓글
+ seq: 댓글 순서
+
+ 으로 설계하였고, 
+
+ ㄱ. 일반 댓글은 parent 값을 가지지 않습니다. 
+ ㄴ. 대댓글은 parent 댓글 No 를 가집니다. 
+ ㄷ. 첫 번째 대댓글은 parent 의 seq + 1 값을 가집니다. 
+ ㄹ. 일반 댓글은 depth 1 대댓글은 depth 2 이며 대댓글에 댓글은 쓸 수 없습니다. ( 즉 depth 값은 1 또는 2 )
+ 
+ 
+ */
+
+ 
+ //처음 댓글
+
+ 
+$(function(){
+	var object={		
+		v :${ vm.content_view.id}, //게시판 넘버
+		c :, //글
+		p :0, //부모 넘버
+		d :0, //댓글인지 대댓글인지 0 / 1
+		s :1, //댓글 순서     +1;
+	};
+	
+	 $.ajax({
+	     url         :   "../../reply",
+	     dataType    :   "json",
+	     contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
+	     type        :   "post",
+	     data        :   object,
+	     success     :   function(retVal){
+	
+	         if(retVal.code == "OK") {
+	             alert(retVal.message);
+	             location.href = "../../list/1";  
+	         } else {
+	             alert(retVal.message);
+	         }
+	          
+	     },
+	     error       :   function(request, status, error){
+	         console.log("ERROR");
+	     }
+	 });
+	 
+});
+ 
 </script>
 </head>
 <body>
-
-	<table width="500" cellpadding="0" cellspacing="0" border="1">
-		<form action="modify" method="post">
-			<input type="hidden" name="id" value="${vm.content_view.id}">
-			<tr>
-				<td> 번호 </td>
-				<td> ${vm.content_view.id} </td>
-			</tr>
-			<tr>
-				<td> 히트 </td>
-				<td> ${vm.content_view.hit} </td>
-			</tr>
-			<tr>
-				<td> 이름 </td>
-				<td> <input type="text" name="name" value="${vm.content_view.name}"></td>
-			</tr>
-			<tr>
-				<td> 제목 </td>
-				<td> <input type="text" name="title" value="${vm.content_view.title}"></td>
-			</tr>
-			<tr>
-				<td> 내용 </td>
-				<td> <textarea rows="10" name="content" >${vm.content_view.content}</textarea></td>
-			</tr>
-			<tr >
-				<td colspan="2"> <input type="submit" value="수정"> &nbsp;&nbsp; <a href="../../list/1">목록보기</a> &nbsp;&nbsp; <a href="delete?id=${content_view.id}">삭제</a> &nbsp;&nbsp; <a href="reply_view?id=${content_view.id}">답변</a></td>
-			</tr>
-		</form>
-	</table>
+	<form action="modify" method="post">
+		<input type="hidden" name="id" value="">
+		<table width="500" cellpadding="0" cellspacing="0" border="1">
+			
+				
+				<tr>
+					<td> 번호 </td>
+					<td> ${vm.content_view.id} </td>
+				</tr>
+				<tr>
+					<td> 히트 </td>
+					<td> ${vm.content_view.hit} </td>
+				</tr>
+				<tr>
+					<td> 이름 </td>
+					<td> <input type="text" name="name" value="${vm.content_view.name}"></td>
+				</tr>
+				<tr>
+					<td> 제목 </td>
+					<td> <input type="text" name="title" value="${vm.content_view.title}"></td>
+				</tr>
+				<tr>
+					<td> 내용 </td>
+					<td> <textarea rows="10" name="content" >${vm.content_view.content}</textarea></td>
+				</tr>
+				<tr >
+					<td colspan="2"> <input type="submit" value="수정"> &nbsp;&nbsp; <a href="../../list/1">목록보기</a> &nbsp;&nbsp; <a href="delete?id=${content_view.id}">삭제</a> &nbsp;&nbsp; <a href="reply_view?id=${content_view.id}">답변</a></td>
+				</tr>
+			
+		</table>
+	</form>
 	
-	
+	<div>
+		<div>
+			<textarea></textarea> 
+		</div>
+		<button type="button">답글 쓰기</button>
+	</div>
 	<br />
 	<br />
 	<!-- asdasd --> 

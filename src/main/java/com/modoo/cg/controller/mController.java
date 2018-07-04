@@ -52,7 +52,6 @@ public class mController {
 		return "login";
 	}*/
 	
-	
 	//메인페이지
 	@RequestMapping("/")
 	public String home(Model model) {
@@ -60,7 +59,6 @@ public class mController {
 		
 		return "index";
 	}
-	
 	
 	
 	//회원가입

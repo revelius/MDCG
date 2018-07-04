@@ -63,4 +63,34 @@ public class CustomSession{
 		return true;
 	}
 	
+	
+	public String setSHA256() {
+		
+		
+		return "";
+	}
+	
+	
+	//http://devsh.tistory.com/entry/%EC%84%B8%EC%85%98-%ED%83%80%EC%9E%84%EC%95%84%EC%9B%83-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+	public void getCSRF_token() {
+		
+		
+		
+	}
+	
+	
+	public void setCSRF_token() {
+		
+		
+		
+	}
+	
+	
+	public boolean TokenCheck() { //토큰이 있는지 없는지 체크
+		
+		
+		
+		return true;
+	}
+	
 }
