@@ -82,6 +82,23 @@ create table test(
 
 );
 
+
+
+
+create table repply_t(
+	num integer primary key not null auto_increment,
+	bid varchar(50),
+	border_id varchar(50),
+	content text,
+	parent int(50),
+	depth int(50),
+	orderid int(50)
+
+);
+
+
+
+
 insert into test(
 	 descript, groupid, parent, depth, orderid
 ) values ("1", 1, 0, 0, 1

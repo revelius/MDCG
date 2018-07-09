@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -179,26 +182,33 @@ public class mController {
 		return "redirect:list/1";
 	}
 	
-	@RequestMapping("/reply_view")
-	public String reply_view(HttpServletRequest request, Model model) {
+	//댓글 
+	
+	@RequestMapping(method=RequestMethod.POST, value= "/r_ajaxV")
+	public Object reply_view(HttpServletRequest request, Model model) {
 		System.out.println("reply_view()");
+		
+		Map<String,Object> retVal = new HashMap<String,Object>();
 		
 		model.addAttribute("request", request);
 		command = new ReplyViewCommand();
 		command.execute(model);
 		
-		return "reply_view";
+		
+		
+		return retVal;
 	}
 	
-	@RequestMapping("/reply")
-	public String reply(HttpServletRequest request, Model model) {
+	@RequestMapping(method=RequestMethod.POST, value ="/r_ajaxW")
+	@ResponseBody
+	public Object reply(@RequestParam Map<String, Object> paramMap) {
+		
 		System.out.println("reply()");
+		Map<String,Object> retVal = new HashMap<String,Object>();
 		
-		model.addAttribute("request", request);
-		command = new ReplyCommand();
-		command.execute(model);
-		
-		return "redirect:list/1";
+		String res=paramMap.get("d").toString();
+		System.out.println(res);
+		return retVal;
 	}
 	
 	@RequestMapping("/delete")

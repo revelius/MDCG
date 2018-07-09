@@ -40,34 +40,35 @@ function fn_paging(a){
 
  
 $(function(){
-	var object={		
-		v :${ vm.content_view.id}, //게시판 넘버
-		c :, //글
-		p :0, //부모 넘버
-		d :0, //댓글인지 대댓글인지 0 / 1
-		s :1, //댓글 순서     +1;
-	};
-	
-	 $.ajax({
-	     url         :   "../../reply",
-	     dataType    :   "json",
-	     contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
-	     type        :   "post",
-	     data        :   object,
-	     success     :   function(retVal){
-	
-	         if(retVal.code == "OK") {
-	             alert(retVal.message);
-	             location.href = "../../list/1";  
-	         } else {
-	             alert(retVal.message);
-	         }
-	          
-	     },
-	     error       :   function(request, status, error){
-	         console.log("ERROR");
-	     }
-	 });
+	$(".btnreple").click(function(){
+		var object={		
+			v :${ vm.content_view.id}, //게시판 넘버
+			c :1, //글
+			p :0, //부모 넘버
+			d :0, //댓글인지 대댓글인지 0 / 1
+			s :1, //댓글 순서     +1;
+		};
+		
+		 $.ajax({
+		     url         :   "../../r_ajaxW",
+		     dataType    :   "json",
+		     contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
+		     type        :   "post",
+		     data        :   object,
+		     success     :   function(retVal){
+			
+		         if(retVal.code == "OK") {
+		             alert(retVal.message);
+		         } else {
+		             alert(retVal.message);
+		         }
+		          
+		     },
+		     error       :   function(request, status, error){
+		         console.log("ERROR");
+		     }
+		 });
+	});
 	 
 });
  
@@ -110,8 +111,18 @@ $(function(){
 		<div>
 			<textarea></textarea> 
 		</div>
-		<button type="button">답글 쓰기</button>
+		<button type="button" class="btnreple">답글 쓰기</button>
 	</div>
+	
+	<div>
+		<div>
+			<textarea></textarea> 
+		</div>
+		<button type="button" class="">댓글</button>
+		<button type="button" class="">수정</button>
+	</div>
+	
+	
 	<br />
 	<br />
 	<!-- asdasd --> 
