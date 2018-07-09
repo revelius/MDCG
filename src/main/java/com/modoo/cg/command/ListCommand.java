@@ -61,6 +61,7 @@ public class ListCommand implements Command {
 			vm.put("list",dto);
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
+			
 			if(sessionNull1 == null) {
 				
 				vm.put("sNull", 1); 

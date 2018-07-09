@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import com.modoo.cg.dto.Dto;
 import com.modoo.cg.dto.MailDto;
 import com.modoo.cg.dto.RegisterDto;
+import com.modoo.cg.dto.ReppDto;
 import com.modoo.cg.util.Constant;
 
 
@@ -114,24 +115,46 @@ public class Dao {
 		return template.queryForObject(query, new BeanPropertyRowMapper<Dto>(Dto.class));
 	}
 	
-	public void reply(final String id, final String name, final String title, final String content, final String cgroup, final String step, final String indent) {
+	
+	public ArrayList<ReppDto> replySn(String num){
+		String query = "select * from repply_t where border_id = "+ num;
+		return (ArrayList<ReppDto>) template.query(query, new BeanPropertyRowMapper<ReppDto>(ReppDto.class));
+	}
+	
+	
+	
+	public int replyw(final String bid, final String border_id, final String content, final int parent, final int depth, final int orderid) {
 		// TODO Auto-generated method stub	
-		String query = "insert into free_board (id, name, title, content, cgroup, step, indent) values (?, ?, ?, ?, ? ,? ,?)";
-		template.update(query, new PreparedStatementSetter() {
+		String query = "insert into repply_t (bid, border_id, content, parent, depth, orderid ) values (?, ?, ?, ?, ? ,? )";
+		int number=template.update(query, new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				// TODO Auto-generated method stub
-				ps.setString(1, id);
-				ps.setString(2, name);
-				ps.setString(3, title);
-				ps.setString(4, content);
-				ps.setInt(5, Integer.parseInt(cgroup));
-				ps.setInt(6, Integer.parseInt(step) + 1);
-				ps.setInt(7, Integer.parseInt(indent) + 1);
+				ps.setString(1, bid);
+				ps.setString(2, border_id);
+				ps.setString(3, content);
+				ps.setInt(4, parent);
+				ps.setInt(5, depth);
+				ps.setInt(6, orderid);
 			}
 		});
+		
+		return  number;
 	}
+	
+	/*create table repply_t(
+			num integer primary key not null auto_increment,
+			bid varchar(50),
+			border_id varchar(50),
+			content text,
+			parent int(50),
+			depth int(50),
+			orderid int(50)
+
+		);*/
+
+	
 	
 	private void replyShape( final String strGroup, final String strStep) {
 		String query = "update free_board set step = step + 1 where cgroup = ? and step > ?";

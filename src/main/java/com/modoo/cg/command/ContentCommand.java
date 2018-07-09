@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 
 import com.modoo.cg.dao.Dao;
 import com.modoo.cg.dto.Dto;
+import com.modoo.cg.dto.ReppDto;
 import com.modoo.cg.paging.page;
 
 public class ContentCommand implements Command {
@@ -44,7 +45,13 @@ public class ContentCommand implements Command {
 		/*contents view end*/
 		
 		
+		
 		ArrayList<Dto> dtoP;
+		
+		/* repple*/
+		ReppDto repledto;
+		ArrayList<ReppDto> dtoR;
+		/* repple end*/
 		
 		if(keyword.equals("")||searchOption.equals("")) {
 		
@@ -58,6 +65,8 @@ public class ContentCommand implements Command {
 			System.out.println("pagesize :"+p.getPageSize());
 			
 			dtoP = dao.listsize( p.getStartIndex(), p.getPageSize());
+			dtoR = dao.replySn(id);
+			
 			
 			Map<String,Object> vm = new HashMap<String,Object>();
 			
@@ -66,7 +75,7 @@ public class ContentCommand implements Command {
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
 			vm.put("content_view", dto);
-			
+			vm.put("repp", dtoR);
 			if(sessionNull1 == null) {
 				
 				vm.put("sNull", 1); 
@@ -94,7 +103,7 @@ public class ContentCommand implements Command {
 			page  p = new page(listlangth,curPage);
 			
 			dtoP = dao.listtitleSearch( p.getStartIndex(), p.getPageSize(), keyword);
-			
+			dtoR = dao.replySn(id);
 			Map<String,Object> vm = new HashMap<String,Object>();
 			
 			vm.put("curP",curPage);
@@ -105,6 +114,8 @@ public class ContentCommand implements Command {
 			vm.put("keyword", keyword);
 			vm.put("searchOption", searchOption);
 			vm.put("getSearch", getSearch);
+			vm.put("repp", dtoR);
+			
 			if(sessionNull1 == null) {
 						
 				vm.put("sNull", 1); 

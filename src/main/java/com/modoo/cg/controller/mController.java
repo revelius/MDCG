@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.modoo.cg.command.*;
+import com.modoo.cg.dao.Dao;
 import com.modoo.cg.limit.minutes;
 import com.modoo.cg.util.Constant;
 import com.naver.naverlogintutorial.oauth.bo.NaverLoginBO;
@@ -199,15 +200,44 @@ public class mController {
 		return retVal;
 	}
 	
-	@RequestMapping(method=RequestMethod.POST, value ="/r_ajaxW")
+	@RequestMapping(method=RequestMethod.POST, value ="/r_ajaxW" , produces = "application/json")
 	@ResponseBody
 	public Object reply(@RequestParam Map<String, Object> paramMap) {
 		
 		System.out.println("reply()");
 		Map<String,Object> retVal = new HashMap<String,Object>();
 		
-		String res=paramMap.get("d").toString();
-		System.out.println(res);
+		String depth=paramMap.get("d").toString();// 댓글인지 대댓글인지 0 / 1
+
+		String seq=paramMap.get("s").toString(); //댓글 순서     +1;
+		
+		String content=paramMap.get("c").toString(); //글 
+		
+		String border_id=paramMap.get("v").toString(); //게시판 넘버
+		
+		String parent=paramMap.get("p").toString(); //부모 넘버
+		
+		/*bid = 아이디*/
+		
+		
+		Dao dao=new Dao();
+		int result=dao.replyw(null, border_id, content, Integer.parseInt(parent), Integer.parseInt(depth), Integer.parseInt(seq));
+		
+		
+		if(result>0) {
+			
+			retVal.put("code", "OK");
+			retVal.put("message", "앗흥 기모찌");
+			
+			//retVal.put("message", "<sasdf>");
+			
+		}else {
+			retVal.put("code", "NO");
+			retVal.put("message", "답변에 오류가 발생하였습니다.");
+			
+		}
+		System.out.println("뎁스:"+depth+" 댓글순서:"+seq + " 글:"+content + " 게시판 넘버:"+ border_id +" 부모:" +parent);
+		
 		return retVal;
 	}
 	

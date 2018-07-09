@@ -38,29 +38,42 @@ function fn_paging(a){
  
  //처음 댓글
 
- 
+
 $(function(){
 	$(".btnreple").click(function(){
-		var object={		
-			v :${ vm.content_view.id}, //게시판 넘버
-			c :1, //글
-			p :0, //부모 넘버
-			d :0, //댓글인지 대댓글인지 0 / 1
-			s :1, //댓글 순서     +1;
-		};
+		
+		 var c=$(".content").val();
+		 var object={		
+					v :${ vm.content_view.id}, //게시판 넘버
+					c :c, //글
+					p :0, //부모 넘버 
+					d :0, //댓글인지 대댓글인지 0 / 1
+					s :1, //댓글 순서     +1; 
+					};
+		
+		
+		
 		
 		 $.ajax({
 		     url         :   "../../r_ajaxW",
 		     dataType    :   "json",
 		     contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
-		     type        :   "post",
+		     type        :   "POST",
+		     async       :   false,
 		     data        :   object,
 		     success     :   function(retVal){
-			
+		    	 //alert(retVal);
+		    	 
 		         if(retVal.code == "OK") {
-		             alert(retVal.message);
+		        	 
+		             alert("글이 정상적으로 등록되었습니다.");
+		             
+		             var c =$(".content").val("");
+		             
 		         } else {
+		        	 
 		             alert(retVal.message);
+
 		         }
 		          
 		     },
@@ -106,10 +119,18 @@ $(function(){
 			
 		</table>
 	</form>
-	
+	<c:choose>
+		<c:when test="${fn:length(vm.repp)> 0 }">
+			<c:forEach items="${vm.repp}" var="dtor">
+				<div>
+					${dtor.content}
+				</div>
+			</c:forEach>
+		</c:when>
+	</c:choose>
 	<div>
 		<div>
-			<textarea></textarea> 
+			<textarea class="content"></textarea> 
 		</div>
 		<button type="button" class="btnreple">답글 쓰기</button>
 	</div>

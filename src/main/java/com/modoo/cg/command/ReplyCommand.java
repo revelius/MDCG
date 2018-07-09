@@ -25,7 +25,7 @@ public class ReplyCommand implements Command {
 		String indent=request.getParameter("indent");
 		
 		Dao dao=new Dao();
-		dao.reply(id,name,title,content,group,step,indent);
+		//dao.reply(id,name,title,content,group,step,indent);
 	}
 
 }

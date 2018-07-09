@@ -12,6 +12,23 @@ public class ReppDto {
 	private int orderid; //글의 순서..
 	
 	
+	public ReppDto() {
+		
+	}
+	
+	
+	
+	public ReppDto(int num, String bid, int border_id, String content, int parent, int depth, int orderid) {
+		
+		this.num = num;
+		this.bid = bid;
+		this.border_id = border_id;
+		this.content = content;
+		this.parent = parent;
+		this.depth = depth;
+		this.orderid = orderid;
+	}
+	
 	public int getNum() {
 		return num;
 	}
