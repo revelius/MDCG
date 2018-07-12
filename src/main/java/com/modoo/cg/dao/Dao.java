@@ -214,10 +214,11 @@ public class Dao {
 	
 	public void register(final String id, final String nickname, final String email) {
 		System.out.println("register()");
+		System.out.println("email:"+email );
 		template.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection con)throws SQLException {
 				String query = 
-						"insert into register (id, nickname, email, create_date, grade, exp) select ?, ?, ?, now(), '�뒟�룎�씠', 0 from dual where not exists (select  id from register where id=?) ";
+						"insert into register (id, nickname, email, create_date, grade, exp) select ?, ?, ?, now(), '슟돌이', 0 from dual where not exists (select  id from register where id=?) ";
 				PreparedStatement pstmt = con.prepareStatement(query);
 				pstmt.setString(1, id);
 				pstmt.setString(2, nickname);

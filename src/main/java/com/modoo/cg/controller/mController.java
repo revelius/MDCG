@@ -236,6 +236,7 @@ public class mController {
 			retVal.put("message", "답변에 오류가 발생하였습니다.");
 			
 		}
+		
 		System.out.println("뎁스:"+depth+" 댓글순서:"+seq + " 글:"+content + " 게시판 넘버:"+ border_id +" 부모:" +parent);
 		
 		return retVal;
