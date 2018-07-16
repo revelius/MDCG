@@ -125,7 +125,7 @@ public class mController {
 		}
 	}
 	
-	@RequestMapping("/write")
+	@RequestMapping(value="/write" ,method=RequestMethod.POST )
 	public String write(HttpServletRequest request, Model model,HttpSession session) {
 		System.out.println("write()");
 		//

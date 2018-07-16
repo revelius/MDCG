@@ -33,8 +33,20 @@ function fn_paging(a){
  ㄹ. 일반 댓글은 depth 1 대댓글은 depth 2 이며 대댓글에 댓글은 쓸 수 없습니다. ( 즉 depth 값은 1 또는 2 )
  
  
+	private int num;
+	private String bid; //아이디
+	private int border_id; //게시글 번호
+	private String content; //답글 글
+	private int parent;//해당 글의 부모
+	private int depth; // 댓글인지 대댓글인지
+	private int orderid; //글의 순서..
+ 
+ 
  */
 
+ 
+ 
+ 
  
  //처음 댓글
 
@@ -50,9 +62,6 @@ $(function(){
 					d :0, //댓글인지 대댓글인지 0 / 1
 					s :1, //댓글 순서     +1; 
 					};
-		
-		
-		
 		
 		 $.ajax({
 		     url         :   "../../r_ajaxW",
@@ -82,6 +91,86 @@ $(function(){
 		     }
 		 });
 	});
+	
+	var switchcheck=1;
+	
+	$(document).on("click","button[class='btnreple_reple']",function(){
+		
+		var parent_num = $(this).attr("number");
+		console.log(switchcheck);
+		var reple_reple = '<div class="reple_reple">'
+							+'<div>'
+								+'<textarea class="reple_content"></textarea>'
+							+'</div><button type="button" class="btnreple_replesave" number="'+parent_num +'">댓글</button><button type="button" class="">수정</button>'
+						 +'</div>';
+		
+		
+		if(switchcheck == 1){
+			
+			$(this).parent().append(reple_reple);
+		
+			switchcheck = 0;
+		
+		}else{
+			
+			
+			$(this).parents().find(".reple_reple").remove();
+			
+			switchcheck = 1;
+			
+		}
+		
+	});
+	
+	$(document).on("click","button[class='btnreple_replesave']",function(){
+		
+		 var c=$(".reple_content").val();
+		 
+		 var parent_num = $(this).attr("number");
+		 
+		 console.log(parent_num);
+		
+		 var object={		
+					v : ${ vm.content_view.id}, //게시판 넘버
+					c : c, //글
+					p : parent_num, //부모 넘버 
+					d : 1, //댓글인지 대댓글인지 0 / 1
+					s :0, //댓글 순서     +1; 
+					};
+		 
+		 $.ajax({
+		     url         :   "../../r_ajaxW",
+		     dataType    :   "json",
+		     contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
+		     type        :   "POST",
+		     async       :   false,
+		     data        :   object,
+		     success     :   function(retVal){
+		    	 //alert(retVal);
+		    	 
+		         if(retVal.code == "OK") {
+		        	 
+		             alert("글이 정상적으로 등록되었습니다.");
+		             
+		             $(this).parent(".reple_reple").remove();
+		             
+		             
+		         } else {
+		        	 
+		             alert(retVal.message);
+
+		         }
+		          
+		     },
+		     error       :   function(request, status, error){
+		         console.log("ERROR");
+		     }
+		 });
+		
+		
+		
+	});
+	
 	 
 });
  
@@ -92,7 +181,6 @@ $(function(){
 		<input type="hidden" name="id" value="">
 		<table width="500" cellpadding="0" cellspacing="0" border="1">
 			
-				
 				<tr>
 					<td> 번호 </td>
 					<td> ${vm.content_view.id} </td>
@@ -122,8 +210,15 @@ $(function(){
 	<c:choose>
 		<c:when test="${fn:length(vm.repp)> 0 }">
 			<c:forEach items="${vm.repp}" var="dtor">
-				<div>
-					${dtor.content}
+				<div style="border:1px solid red; margin-left:${dtor.depth * 100}px">
+					<p>parent:${dtor.parent} , depth:${dtor.depth } , orderid : ${dtor.orderid}  </p>
+					<div>
+						${dtor.content}
+					</div>
+					 <c:if test="${dtor.depth ne 1}">
+						<button type="button" class="btnreple_reple"  number="${dtor.num}">댓글</button>
+					</c:if>
+					<button type="button" class="">수정</button>
 				</div>
 			</c:forEach>
 		</c:when>
@@ -132,16 +227,9 @@ $(function(){
 		<div>
 			<textarea class="content"></textarea> 
 		</div>
-		<button type="button" class="btnreple">답글 쓰기</button>
+		<button type="button" class="btnreple">댓글 쓰기</button>
 	</div>
 	
-	<div>
-		<div>
-			<textarea></textarea> 
-		</div>
-		<button type="button" class="">댓글</button>
-		<button type="button" class="">수정</button>
-	</div>
 	
 	
 	<br />

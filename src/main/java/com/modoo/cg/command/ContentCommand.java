@@ -50,8 +50,45 @@ public class ContentCommand implements Command {
 		
 		/* repple*/
 		ReppDto repledto;
-		ArrayList<ReppDto> dtoR;
+		ArrayList<ReppDto> dtoR = dao.replySn(id);
 		/* repple end*/
+		
+		ArrayList<ReppDto> replyp = new ArrayList<ReppDto>();
+		
+		ArrayList<ReppDto> replyc = new ArrayList<ReppDto>();
+		
+		ArrayList<ReppDto> replyList = new ArrayList<ReppDto>();
+		
+		 for(ReppDto ReppDto: dtoR){
+			 
+	            if(ReppDto.getDepth() == 0 ){
+	            	
+	            	replyp.add(ReppDto);
+	            	
+	            }else{
+	            	
+	            	replyc.add(ReppDto);
+	            	
+	            }
+	        }
+	 
+	
+	        for(ReppDto ReppDtoP: replyp){
+
+	        	replyList.add(ReppDtoP);
+
+	            for(ReppDto ReppDtoc: replyc){
+	
+	                if(ReppDtoP.getNum()==ReppDtoc.getParent()){
+	                	
+	                	replyList.add(ReppDtoc);
+	                	
+	                }
+	 
+	            }
+	 
+	        }
+	        
 		
 		if(keyword.equals("")||searchOption.equals("")) {
 		
@@ -65,7 +102,8 @@ public class ContentCommand implements Command {
 			System.out.println("pagesize :"+p.getPageSize());
 			
 			dtoP = dao.listsize( p.getStartIndex(), p.getPageSize());
-			dtoR = dao.replySn(id);
+			
+			//dtoR = dao.replySn(id);
 			
 			
 			Map<String,Object> vm = new HashMap<String,Object>();
@@ -75,7 +113,10 @@ public class ContentCommand implements Command {
 			vm.put("listcnt", listlangth);
 			vm.put("p",p);
 			vm.put("content_view", dto);
-			vm.put("repp", dtoR);
+			
+			vm.put("repp", replyList);
+			
+			
 			if(sessionNull1 == null) {
 				
 				vm.put("sNull", 1); 
@@ -114,7 +155,7 @@ public class ContentCommand implements Command {
 			vm.put("keyword", keyword);
 			vm.put("searchOption", searchOption);
 			vm.put("getSearch", getSearch);
-			vm.put("repp", dtoR);
+			vm.put("repp", replyList);
 			
 			if(sessionNull1 == null) {
 						
